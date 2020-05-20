@@ -134,12 +134,28 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         this.arraySet(index, x);
         this.percolateUp(index);
     }
-
+    
     @Override
     public void remove(E x) throws ElementNotFoundException {
-        // TODO:
+        if(isEmpty()) {
+        	throw new ElementNotFoundException(x);
+        }
+        
+        int index = -1;
+        for(int i=0; i<this.currentSize; i++) { //finding the element (its position is put in index)
+        	if(this.array.get(i).compareTo(x) == 0) {
+        		index = i;
+        	}
+        }
+        if(index == -1) {
+        	throw new ElementNotFoundException(x);
+        }
+        
+        this.arraySet(index,this.array.get(0)); //The element's value is replaced by the min's
+        this.percolateUp(index); //we move it up in the heap
+        this.deleteMin(); //we get rid of the min, and deletemin does the rest for us
     }
-
+    
     @Override
     public E findMin() throws EmptyPriorityQueueException {
         if (isEmpty())
@@ -155,6 +171,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         this.percolateDown(0);
         return minItem;
     }
+
 
     /**
      * Creates a multi-lines string representing a sorted view of this binary heap.
