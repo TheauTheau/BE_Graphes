@@ -24,15 +24,42 @@ public class Label implements Comparable<Label>{
 		this.Father = null;
 	}
 	
+	public Label(Node nod, boolean mar, double co, Arc fa){
+		this.Current_Node = nod;
+		this.Mark = mar;
+		this.Cost = co;
+		this.Father = fa;
+	}
+	
+	public Node getCurrent_Node() {
+		return this.Current_Node;
+	}
+	
+	public void Mark() {
+		this.Mark = true;
+	}
+	
+	public boolean isMarked() {
+		if(this.Mark) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	public double getCost() {
 		return this.Cost;
+	}
+	
+	public void setCost(double co) {
+		this.Cost = co;
 	}
 	
 	public double getTotalCost() {
 		return this.Cost;
 	}
 	
-	@Override public int compareTo(Label other) {
+	public int compareTo(Label other) {
 		return Double.compare(this.getTotalCost(),other.getTotalCost());
 	}
 		

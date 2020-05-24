@@ -45,7 +45,9 @@ public class Path {
         		int num = 0;
         		boolean successor_found = false;
         		for(int j=0; j<arc_suiv.size(); j++) { //looks through list of successors
-        			if((arc_suiv.get(j).getDestination().compareTo(nodes.get(i+1)) == 0) && (arc_suiv.get(j).getMinimumTravelTime() < travel_time)) { //if successor has a faster travel time, that successor will be the next node in the path
+        			if((arc_suiv.get(j).getDestination().compareTo(nodes.get(i+1)) == 0) 
+        					&& (arc_suiv.get(j).getMinimumTravelTime() < travel_time))
+        					{ //if successor has a faster travel time, that successor will be the next node in the path
         				num = j;
         				travel_time = arc_suiv.get(num).getMinimumTravelTime();
         				successor_found = true;
@@ -91,7 +93,9 @@ public class Path {
         		int num = 0;
         		boolean successor_found = false;
         		for(int j=0; j<arc_suiv.size(); j++) { //looks through list of successors
-        			if((arc_suiv.get(j).getDestination().compareTo(nodes.get(i+1)) == 0) && (arc_suiv.get(j).getLength() < length)) { //if successor has a faster travel time, that successor will be the next node in the path
+        			if((arc_suiv.get(j).getDestination().compareTo(nodes.get(i+1)) == 0) 
+        					&& (arc_suiv.get(j).getLength() < length)) 
+        					{ //if successor has a shorter length, that successor will be the next node in the path
         				num = j;
         				length = arc_suiv.get(num).getLength();
         				successor_found = true;
@@ -248,11 +252,13 @@ public class Path {
      * @return true if the path is valid, false otherwise.
      */
     public boolean isValid() {
-        if(this.isEmpty()) {
+        if(this.isEmpty()) { //Premier cas <=> si le chemin est vide
         	return true;
-        }else if(this.size() == 1){
+        }else if(this.size() == 1){ //Deuxieme cas <=> si le chemin est constitué d'un seul Node
         	return true;
-        }else if((this.getOrigin() == this.getArcs().get(0).getOrigin()) && (this.getArcs().get(0).getDestination() == this.getArcs().get(1).getOrigin()) && (this.getArcs().get(1).getDestination() == this.getArcs().get(2).getOrigin())){
+        }else if((this.getOrigin() == this.getArcs().get(0).getOrigin()) //Troisieme cas 
+        		&& (this.getArcs().get(0).getDestination() == this.getArcs().get(1).getOrigin()) 
+        		&& (this.getArcs().get(1).getDestination() == this.getArcs().get(2).getOrigin())){
         	return true;
         }else {
         	return false;

@@ -45,8 +45,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	Label min = tas.deleteMin();
         	labels.get(min.Current_Node.getId()).Mark = true;
         	
-        	System.out.println("Coût du label marqué : " + min.getCost());
-        	System.out.println("Taille du tas : " + tas.size());
+        	//System.out.println("Coût du label marqué : " + min.getCost());
+        	//System.out.println("Taille du tas : " + tas.size());
         	
         	int nbsuccessors = min.Current_Node.getNumberOfSuccessors();
         	List<Arc> successors = min.Current_Node.getSuccessors();

@@ -1,24 +1,24 @@
 package org.insa.graphs.algorithm.shortestpath;
 
-import java.util.ArrayList;
+import org.insa.graphs.model.Label;
+import org.insa.graphs.model.LabelStar; //Gotta include it
 import java.util.Collections;
+import org.insa.graphs.model.Path;
+import org.insa.graphs.model.Node;
+import org.insa.graphs.model.Graph;
+import org.insa.graphs.model.Arc;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
-import org.insa.graphs.model.Arc;
-import org.insa.graphs.model.Graph;
-import org.insa.graphs.model.Label;
-import org.insa.graphs.model.LabelStar;
-import org.insa.graphs.model.Node;
-import org.insa.graphs.model.Path;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
     public AStarAlgorithm(ShortestPathData data) {
         super(data);
     }
-    
+
     @Override
     protected ShortestPathSolution doRun() {
         final ShortestPathData data = getInputData();
@@ -32,25 +32,25 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         notifyOriginProcessed(data.getOrigin());
         
         //Initiation
-        ArrayList<LabelStar> labels = new ArrayList<LabelStar>(); //LabelStar here
+        ArrayList<LabelStar> labels = new ArrayList<LabelStar>(); //It's LabelStar now - only difference
         BinaryHeap<Label> tas = new BinaryHeap<Label>();
         
         for(int i=0; i<nbNodes; i++) {
-        	labels.add(new LabelStar(nodes.get(i),data.getDestination())); //We implement LabelStars with the Destination Node
+        	labels.add(new LabelStar(nodes.get(i),data.getDestination(),false,Float.POSITIVE_INFINITY,null)); //We implement LabelStars with the Destination Node
         }
-        labels.get(index_origine).Cost = 0;
+        labels.get(index_origine).setCost(0);
         tas.insert(labels.get(index_origine));
         
         //Iterations
-        while(!labels.get(index_dest).Mark && tas.size() != 0) {
+        while(!labels.get(index_dest).isMarked() && tas.size() != 0) {
         	Label min = tas.deleteMin();
-        	labels.get(min.Current_Node.getId()).Mark = true;
+        	labels.get(min.getCurrent_Node().getId()).Mark();
         	
-        	System.out.println("Coût du label marqué : " + min.getCost());
-        	System.out.println("Taille du tas : " + tas.size());
+        	//System.out.println("Coût du label marqué : " + min.getCost());
+        	//System.out.println("Taille du tas : " + tas.size());
         	
-        	int nbsuccessors = min.Current_Node.getNumberOfSuccessors();
-        	List<Arc> successors = min.Current_Node.getSuccessors();
+        	int nbsuccessors = min.getCurrent_Node().getNumberOfSuccessors();
+        	List<Arc> successors = min.getCurrent_Node().getSuccessors();
         	
         	for(int i=0; i<nbsuccessors; i++) {
         		if (!data.isAllowed(successors.get(i))) {
@@ -58,7 +58,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                 }
         		
         		int index_suiv = successors.get(i).getDestination().getId();
-        		if(!labels.get(index_suiv).Mark) {
+        		if(!labels.get(index_suiv).isMarked()) {
         			double oldDistance = labels.get(index_suiv).getCost();
         			double newDistance = min.getCost() + data.getCost(successors.get(i));
         			
@@ -67,7 +67,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                     }
         			
         			if(oldDistance > newDistance) {
-        				labels.get(index_suiv).Cost = newDistance;
+        				labels.get(index_suiv).setCost(newDistance);
         				labels.get(index_suiv).Father = successors.get(i);
         				if (Double.isFinite(oldDistance)){
         					tas.remove(labels.get(index_suiv));

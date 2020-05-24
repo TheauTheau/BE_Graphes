@@ -9,27 +9,24 @@ package org.insa.graphs.model;
  *
  */
 
-public class LabelStar extends Label implements Comparable<Label>{
+public class LabelStar extends Label{
 	
-	public Node Current_Node; //Labeled Node
-	
-	public boolean Mark; //True when MinCost of current node is known
-	
-	public double Cost; //It's different now, we'll implement it in A*
-	
-	public Arc Father; //The father Node is at the end of the Arc
-	
-	public Node Destination; //The destination node we need to calculate the totalcost
+	public double DistanceToDestination; //The destination node we need to calculate the totalcost
 	
 	public LabelStar(Node nod, Node dest){
 		super(nod);
 		this.Mark = false;
 		this.Cost = Double.POSITIVE_INFINITY;
 		this.Father = null;
-		this.Destination = dest;
+		this.DistanceToDestination = Current_Node.getPoint().distanceTo(dest.getPoint());
+	}
+	
+	public LabelStar(Node nod, Node dest, boolean mar, double co, Arc fa){
+		super(nod,mar,co,fa);
+		this.DistanceToDestination = Current_Node.getPoint().distanceTo(dest.getPoint());
 	}
 	
 	public double getTotalCost(){
-		return this.Cost+this.Current_Node.getPoint().distanceTo(this.Destination.getPoint());
+		return this.Cost+this.DistanceToDestination;
 	}
 }
