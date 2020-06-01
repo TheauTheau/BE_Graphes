@@ -27,7 +27,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         List<Node> nodes = graph.getNodes();
         final int nbNodes = graph.size();
         
-        int index_origine = data.getOrigin().getId();
+        int index_origin = data.getOrigin().getId();
         int index_dest = data.getDestination().getId();
         notifyOriginProcessed(data.getOrigin());
         
@@ -35,19 +35,19 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         ArrayList<LabelStar> labels = new ArrayList<LabelStar>(); //It's LabelStar now - only difference
         BinaryHeap<Label> tas = new BinaryHeap<Label>();
         
-        for(int i=0; i<nbNodes; i++) {
-        	labels.add(new LabelStar(nodes.get(i),data.getDestination(),false,Float.POSITIVE_INFINITY,null)); //We implement LabelStars with the Destination Node
+        for(int i=0; i<nbNodes; i++) { //We implement LabelStars with the chosen Destination Node
+        	labels.add(new LabelStar(nodes.get(i),data.getDestination(),false,Float.POSITIVE_INFINITY,null));
         }
-        labels.get(index_origine).setCost(0);
-        tas.insert(labels.get(index_origine));
+        labels.get(index_origin).setCost(0);
+        tas.insert(labels.get(index_origin));
         
         //Iterations
         while(!labels.get(index_dest).isMarked() && tas.size() != 0) {
         	Label min = tas.deleteMin();
         	labels.get(min.getCurrent_Node().getId()).Mark();
         	
-        	//System.out.println("Coût du label marqué : " + min.getCost());
-        	//System.out.println("Taille du tas : " + tas.size());
+        	System.out.println("Current minLabel's Cost: "+min.getCost());
+        	System.out.println("Current minLabel's amount of Successors: "+min.getCurrent_Node().getNumberOfSuccessors());
         	
         	int nbsuccessors = min.getCurrent_Node().getNumberOfSuccessors();
         	List<Arc> successors = min.getCurrent_Node().getSuccessors();
@@ -97,8 +97,8 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, chemin));
             
            
-        System.out.println("Longueur chemin Path : " + solution.getPath().getLength() + ", Dijkstra : " + labels.get(index_dest).getCost());
-        System.out.println("Durée chemin Path : " + solution.getPath().getMinimumTravelTime() + ", Dijkstra : " + labels.get(index_dest).getCost());
+        System.out.println("Longueur chemin Path : " + solution.getPath().getLength() + ", AStar : " + labels.get(index_dest).getCost());
+        System.out.println("Durée chemin Path : " + solution.getPath().getMinimumTravelTime() + ", AStar : " + labels.get(index_dest).getCost());
         }
         
         return solution;
